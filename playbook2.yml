@@ -1,0 +1,13 @@
+---
+- hosts: slavenode
+  become: true
+  become_user: root
+  tasks:
+  - name: Install docker
+    yum: name=docker state=present
+  - name: start docker
+    service: name=docker state=started
+  - name: login to dockerHub
+    command: docker login --username sreejakolli --password First@143
+  - name: run the image into a container on slavenode
+    command: docker run --name projcertimage -d -P sreejakolli/projcert

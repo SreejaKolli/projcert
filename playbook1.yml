@@ -1,0 +1,24 @@
+---
+- hosts: master
+  become: true
+  become_user: root
+  tasks:
+  - name: Install docker
+    yum: name=docker state=present
+  - name: start docker
+    service: name=docker state=started
+  - name: clone the repo
+    git: repo=https://github.com/SreejaKolli/projcert.git
+         dest=/root/projCert
+  - name: Build dockerfile
+    command: docker build -t projcert .
+    args: 
+      chdir: /root/projCert
+  - name: change name of the image
+    command: docker tag projcert sreejakolli/projcert
+  - name: login to dockerHub
+    command: docker login --username sreejakolli --password First@143
+  - name: push to docker hub
+    command: docker push sreejakolli/projcert
+  - name: remove the docker image from Master VM
+    command: docker rmi sreejakolli/projcert projcert devopsedu/webapp

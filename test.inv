@@ -1,0 +1,5 @@
+[slavenode]
+172.31.23.217 ansible_user=ec2-user
+
+[master]
+172.31.24.67 ansible_user=ec2-user
